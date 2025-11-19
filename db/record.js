@@ -1,10 +1,10 @@
-function validateRecord(record) {
-  if (!record.name || !record.value) throw new Error('Record must have both name and value.');
-  return true;
-}
+const mongoose = require('mongoose');
 
-function generateId() {
-  return Date.now();
-}
+const RecordSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    value: { type: String, required: true },
+    created: { type: Date, default: Date.now }
+});
 
-module.exports = { validateRecord, generateId };
+module.exports = mongoose.model('Record', RecordSchema);
+
