@@ -1,24 +1,16 @@
-# Use official Node LTS
-FROM node:18-alpine
+FROM node:18
 
-# set working dir
 WORKDIR /usr/src/app
 
-# copy package manifests first to leverage cache
 COPY package*.json ./
+RUN npm install
 
-# install deps (production only)
-RUN npm ci --only=production
+# Make sure Express is installed (critical for web server)
+RUN npm install express
 
-# copy app source
 COPY . .
 
-# ensure node runs in production mode
-ENV NODE_ENV=production
-
-# Expose port that app listens on
 EXPOSE 3000
 
-# Default command
-CMD ["node", "main.js"]
-
+# Changed from main.js to server.js - this is the key fix!
+CMD ["node", "server.js"]
